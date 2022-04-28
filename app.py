@@ -121,7 +121,7 @@ with c30:
     else:
         st.info(
             f"""
-                👆 Upload a .csv file first. Sample to try: [biostats.csv](https://people.sc.fsu.edu/~jburkardt/data/csv/biostats.csv)
+                👆 Upload a .csv file first. The file must be in csv format downloaded from the download section of Brandwatch
                 """
         )
 
