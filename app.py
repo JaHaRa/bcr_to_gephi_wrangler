@@ -61,6 +61,47 @@ st.title("BCR2Gephi Wrangler")
 #     st.text("")
 
 
+
+def df_to_nx(uploaded_file):
+    
+    df = pd.read_csv(uploaded_file, skiprows=6, low_memory=False)
+    
+    # isolate tweets from news and other content
+    df = df[df['Page Type'] == 'twitter']
+    # select columns in dataframe
+    df = df.loc[:,['Author', 
+                    'Date',
+                    'Mentioned Authors', 
+                    'Full Text', 
+                    'Sentiment', 
+                    'Impressions']]
+    # dropna across two cloumns
+    df.dropna(subset=['Mentioned Authors', 'Full Text'], inplace=True)
+    # split mentioned accounts into lists
+    df['Mentioned Authors'] = df['Mentioned Authors'].str.split(',')
+    # explode list of mentioned authors
+    df = df.explode('Mentioned Authors', ignore_index=False)
+    # strip out @s and tidy accounts
+    df['Mentioned Authors'] = [r.replace("@", "").replace("'s", "").strip() for r in  df['Mentioned Authors']] 
+    # lower-case author accounts
+    df['Author'] = df['Author'].str.lower()
+    # rename columns to source and target
+    df = df.rename(columns={'Author': 'source', 'Mentioned Authors': 'target'})
+    # change sentiment to numerical score
+    df['Sentiment'] = sentiment_to_numerical(df["Sentiment"])
+    return df
+
+def sentiment_to_numerical(sentiment_col):
+    numerical_sentiment = []
+    for s in sentiment_col:
+        if s == 'positive':
+            numerical_sentiment.append(1)
+        elif s == 'negative':
+            numerical_sentiment.append(-1)
+        else:
+            numerical_sentiment.append(0)
+    return numerical_sentiment
+
 c29, c30, c31 = st.columns([1, 6, 1])
 
 with c30:
@@ -73,7 +114,7 @@ with c30:
 
     if uploaded_file is not None:
         file_container = st.expander("Check your uploaded .csv")
-        shows = pd.read_csv(uploaded_file)
+        shows = df_to_nx(uploaded_file)
         uploaded_file.seek(0)
         file_container.write(shows)
 
@@ -125,7 +166,7 @@ with c29:
 
     CSVButton = download_button(
         df,
-        "File.csv",
+        f"bcr_to_gephi_{pd.Timestamp.now().strftime('%Y_%m_%d_%X')}.csv",
         "Download to CSV",
     )
 
