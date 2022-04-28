@@ -135,14 +135,14 @@ c29, c30, c31 = st.columns([1, 1, 2])
 with c29:
 
     CSVButton = download_button(
-        df,
+        shows,
         f"bcr_to_gephi_{pd.Timestamp.now().strftime('%Y_%m_%d_%X')}.csv",
         "Download to CSV",
     )
 
 with c30:
     CSVButton = download_button(
-        df,
-        "File.csv",
+        shows,
+        f"bcr_to_gephi_{pd.Timestamp.now().strftime('%Y_%m_%d_%X')}.txt",
         "Download to TXT",
     )
