@@ -123,10 +123,10 @@ with c30:
 
         st.stop()
 
-st.subheader("Wrangled data will appear below 👇 ")
+st.subheader("Wrangled data sample will appear below 👇 ")
 st.text("")
 
-st.table(shows)
+st.table(shows.head)
 
 st.text("")
 
