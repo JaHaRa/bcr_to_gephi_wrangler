@@ -136,13 +136,13 @@ with c29:
 
     CSVButton = download_button(
         shows,
-        f"bcr_to_gephi_{pd.Timestamp.now().strftime('%Y_%m_%d_%X')}.csv",
+        f"bcr_to_gephi_{pd.Timestamp.now().strftime('%Y-%m-%d_%X')}.csv",
         "Download to CSV",
     )
 
 with c30:
     CSVButton = download_button(
         shows,
-        f"bcr_to_gephi_{pd.Timestamp.now().strftime('%Y_%m_%d_%X')}.txt",
+        f"bcr_to_gephi_{pd.Timestamp.now().strftime('%Y-%m-%d_%X')}.txt",
         "Download to TXT",
     )
